@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "field.h"
+#include "player.h"
 
 int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLine, int nCmdShow ) {
     ChangeWindowMode( 1 );//ウィンドウ表示

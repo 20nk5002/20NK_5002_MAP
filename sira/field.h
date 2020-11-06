@@ -21,21 +21,3 @@ struct Field {
     void draw();
     void destroy();
 };
-
-struct Player {
-    int texture;
-    int x, y;
-    int walkanimate;
-    int aim = 0;
-    int walking = 0;
-    int cnt = 0;
-
-    Player(); //コンストラクタ
-    ~Player(); //デストラクタ
-
-    bool init();
-    void update();
-    void draw();
-    void destroy();
-
-};
