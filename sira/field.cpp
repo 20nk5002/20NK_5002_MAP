@@ -66,7 +66,7 @@ void Field::update() {
 void Field::draw() {
     for( int i = 0; i < width * height; i++ ) {
         DrawRectGraph( chips[ i ].x, chips[ i ].y, chips[ i ].trim_x, chips[ i ].trim_y, 64, 64, texture, false );
-        DrawFormatString( chips[ i ].x, chips[ i ].y, 0xFFFFFF, "%d", i );
+        DrawFormatString( chips[ i ].x, chips[ i ].y, chips[ i ].solid ? 0xFFFF00 : 0xFFFFFF, "%d", i );
     }
 }
 
