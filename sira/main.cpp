@@ -22,6 +22,7 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
 
     while( ProcessMessage() != -1 ) {
 
+        field.update();
         sira.update();
 
         ClearDrawScreen(); //‰æ–Ê‚Ì‰Šú‰»

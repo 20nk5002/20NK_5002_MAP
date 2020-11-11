@@ -12,11 +12,12 @@ struct Player {
     int texture;
     PChip* chips;
     int x, y;
+    int walkcount;
     int walkanimate;
     int aim = 0;
     int walking = 0;
     int cnt = 0;
-    int iswhere = 64;
+    int iswhere = 0;
 
     int stagewidth, stageheight;
 

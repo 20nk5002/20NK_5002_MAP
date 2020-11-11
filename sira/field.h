@@ -13,6 +13,12 @@ struct Field {
     Chip* chips;//チップ構造体ポインタ
     int width, height; //縦横に並んでいるチップの個数
 
+    int x, y;
+    int walking;
+    int iswhere;
+    int cnt;
+    int aim;
+
     Field(); //コンストラクタ
     ~Field(); //デストラクタ
 

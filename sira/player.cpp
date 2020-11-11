@@ -16,9 +16,9 @@ PChip::PChip() {
 Player::Player() {
     texture = 0;
     walkanimate = aim = 0;
-
-    x = (iswhere % 20) * 64;
-    y = ((iswhere / 20) - 1) * 64;
+    walkcount = 0;
+    cnt = 0;
+    x = y = 0;
 
     walking = 0;
     chips = NULL;
@@ -33,7 +33,7 @@ bool Player::init() {
         return false;
     }
 
-    FILE* fp = fopen( "field.fmf", "rb" );
+    FILE* fp = fopen( "alice.fmf", "rb" );
     if( fp == NULL ) {
         return false;
     }
@@ -46,6 +46,11 @@ bool Player::init() {
     if( chips == NULL ) {
         return false;
     }
+
+    iswhere = 490;
+
+    x = (iswhere % 20) * 64;
+    y = ((iswhere / 20) - 1) * 64;
 
     fseek( fp, 20L, SEEK_SET );
 
@@ -74,62 +79,59 @@ void Player::update() {
 
     if( walking == 1 ) {
         if( aim == 0 ) {
-            y += 4;
+            //y += 4;
         }
         else if( aim == 1 ) {
-            x -= 4;
+            //x -= 4;
         }
         else if( aim == 2 ) {
-            y -= 4;
+            //y -= 4;
         }
         else if( aim == 3 ) {
-            x += 4;
+            //x += 4;
         }
         else if( aim == 4 ) {
-            x -= 4; y -= 4;
+            //x -= 4; y -= 4;
         }
         else if( aim == 5 ) {
-            x -= 4; y += 4;
+            //x -= 4; y += 4;
         }
         else if( aim == 6 ) {
-            x += 4; y += 4;
+            //x += 4; y += 4;
         }
         else if( aim == 7 ) {
-            x += 4; y -= 4;
+            //x += 4; y -= 4;
         }
         cnt += 4; 
         if( cnt >= 64 ) {
-            cnt = 0; walking = 0; walkanimate = 0;
-        }
-        if( cnt == 32 ) {
-            walkanimate = 1;
+            cnt = 0; walking = 0;
         }
 
     }
 
     if( walking == 0 ) {
-        if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_LEFT ) ) {
+        if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere % stagewidth != 0 ) {
             if( chips[ iswhere - (stagewidth + 1) ].solid == 0 ) {
                 walking = 1;
                 iswhere -= stagewidth + 1;
             }
             aim = 4;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_LEFT ) ) {
+        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere % stagewidth != 0 ) {
             if( chips[ iswhere + (stagewidth - 1) ].solid == 0 ) {
                 walking = 1;
                 iswhere += stagewidth - 1;
             }
             aim = 5;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_RIGHT ) ) {
+        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % stagewidth != (stagewidth - 1) ) {
             if( chips[ iswhere + (stagewidth + 1) ].solid == 0 ) {
                 walking = 1;
                 iswhere += stagewidth + 1;
             }
             aim = 6;
         }
-        else if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_RIGHT ) ) {
+        else if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % stagewidth != (stagewidth - 1) ) {
             if( chips[ iswhere - (stagewidth - 1) ].solid == 0 ) {
                 walking = 1;
                 iswhere -= stagewidth - 1;
@@ -143,7 +145,7 @@ void Player::update() {
             }
             aim = 0;
         }
-        else if( CheckHitKey( KEY_INPUT_LEFT ) ) {
+        else if( CheckHitKey( KEY_INPUT_LEFT ) && iswhere % stagewidth != 0 ) {
             if( chips[ iswhere - 1 ].solid == 0 ) {
                 walking = 1;
                 iswhere -= 1;
@@ -157,7 +159,7 @@ void Player::update() {
             }
             aim = 2;
         }
-        else if( CheckHitKey( KEY_INPUT_RIGHT ) ) {
+        else if( CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % stagewidth != (stagewidth - 1) ) {
             if( chips[ iswhere + 1 ].solid == 0 ) {
                 walking = 1;
                 iswhere += 1;
@@ -165,11 +167,26 @@ void Player::update() {
             aim = 3;
         }
     }
+
+   walkcount++;
+    if( walkcount == 20 ) {
+        walkanimate = 1;
+    }
+    if( walkcount == 40 ) {
+        walkanimate = 0;
+    }
+    if( walkcount == 60 ) {
+        walkanimate = 2;
+    }if( walkcount == 80 ) {
+        walkanimate = 0;
+        walkcount = 0;
+    }
+
 }
 
 void Player::draw() {
-    DrawRectGraph( x, y, 64 * (walking + walkanimate) + (192 * (aim >= 4)), 96 * (aim % 4), 64, 96, texture, 1, 0, 0 );
-    DrawFormatString( (iswhere % 20) * 64, (iswhere / 20) * 64, 0x00FFFF, "Å°" );
+    DrawRectGraph( 640, 320, 64 * (walkanimate)+(192 * (aim >= 4)), 96 * (aim % 4), 64, 96, texture, 1, 0, 0 );
+    //DrawFormatString( (iswhere % stagewidth) * 64, (iswhere / stagewidth) * 64, 0x00FFFF, "Å°" );
 }
 
 void Player::destroy() {
