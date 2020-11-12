@@ -78,7 +78,7 @@ bool Player::init() {
 void Player::update() {
 
     if( walking == 1 ) {
-        if( aim == 0 ) {
+       /* if( aim == 0 ) {
             //y += 4;
         }
         else if( aim == 1 ) {
@@ -101,7 +101,7 @@ void Player::update() {
         }
         else if( aim == 7 ) {
             //x += 4; y -= 4;
-        }
+        }*/
         cnt += 4; 
         if( cnt >= 64 ) {
             cnt = 0; walking = 0;
