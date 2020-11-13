@@ -3,19 +3,19 @@
 #include "field.h"
 
 Chip::Chip() {
-    x = y = 0;
-    trim_x = trim_y = 0;
-    id = 0;
-    solid = 0;
+    x_ = y_ = 0;
+    trim_x_ = trim_y_ = 0;
+    id_ = 0;
+    solid_ = 0;
 }
 
 Field::Field() {
-    texture = 0;
-    chips = NULL;
+    texture_ = 0;
+    chips_ = NULL;
 
-    x = y = 0;
-    walking = aim = 0;
-    cnt = 0;
+    x_ = y_ = 0;
+    walking_= aim_ = 0;
+    cnt_ = 0;
 }
 
 Field::~Field() {
@@ -24,9 +24,9 @@ Field::~Field() {
 
 bool Field::init() {
 
-    iswhere = 490;
+    iswhere_ = 490;
 
-    if( (texture = LoadGraph( "mapchip0.png" )) == -1 ) {
+    if( (texture_ = LoadGraph( "mapchip0.png" )) == -1 ) {
         return false;
     }
     FILE* fp = fopen( "alice.fmf", "rb" );
@@ -35,30 +35,30 @@ bool Field::init() {
     }
 
     fseek( fp, 8L, SEEK_SET );
-    fread( &width, sizeof( int ), 1, fp );
-    fread( &height, sizeof( int ), 1, fp );
+    fread( &width_, sizeof( int ), 1, fp );
+    fread( &height_, sizeof( int ), 1, fp );
 
-    chips = new Chip[ width * height ];
-    if( chips == NULL ) {
+    chips_ = new Chip[ width_ * height_ ];
+    if( chips_ == NULL ) {
         return false;
     }
 
     fseek( fp, 20L, SEEK_SET );
 
-    for( int i = 0; i < width * height; i++ ) {
-        fread( &chips[ i ].id, sizeof( char ), 1, fp );
+    for( int i = 0; i < width_ * height_; i++ ) {
+        fread( &chips_[ i ].id_, sizeof( char ), 1, fp );
 
-        chips[ i ].trim_x = chips[ i ].id % 12 * 64;
-        chips[ i ].trim_y = chips[ i ].id / 12 * 64;
+        chips_[ i ].trim_x_ = chips_[ i ].id_ % 12 * 64;
+        chips_[ i ].trim_y_ = chips_[ i ].id_ / 12 * 64;
 
-        chips[ i ].x = 64 * (i % width);
-        chips[ i ].y = 64 * (i / width);
+        chips_[ i ].x_ = 64 * (i % width_);
+        chips_[ i ].y_ = 64 * (i / width_);
 
-        if( chips[ i ].id == 4 || chips[ i ].id == 5 || chips[ i ].id == 10 || chips[ i ].id == 11 ) {
-            chips[ i ].solid = 0;
+        if( chips_[ i ].id_ == 4 || chips_[ i ].id_ == 5 || chips_[ i ].id_ == 10 || chips_[ i ].id_ == 11 ) {
+            chips_[ i ].solid_ = 0;
         }
         else {
-            chips[ i ].solid = 1;
+            chips_[ i ].solid_ = 1;
         }
     }
 
@@ -67,110 +67,110 @@ bool Field::init() {
 
 void Field::update() {
 
-    if( walking == 1 ) {
-        if( aim == 0 ) {
-            y += 4;
+    if( walking_ == 1 ) {
+        if( aim_ == 0 ) {
+            y_ += 4;
         }
-        else if( aim == 1 ) {
-            x -= 4;
+        else if( aim_ == 1 ) {
+            x_ -= 4;
         }
-        else if( aim == 2 ) {
-            y -= 4;
+        else if( aim_ == 2 ) {
+            y_ -= 4;
         }
-        else if( aim == 3 ) {
-            x += 4;
+        else if( aim_ == 3 ) {
+            x_ += 4;
         }
-        else if( aim == 4 ) {
-            x -= 4; y -= 4;
+        else if( aim_ == 4 ) {
+            x_ -= 4; y_ -= 4;
         }
-        else if( aim == 5 ) {
-            x -= 4; y += 4;
+        else if( aim_ == 5 ) {
+            x_ -= 4; y_ += 4;
         }
-        else if( aim == 6 ) {
-            x += 4; y += 4;
+        else if( aim_ == 6 ) {
+            x_ += 4; y_ += 4;
         }
-        else if( aim == 7 ) {
-            x += 4; y -= 4;
+        else if( aim_ == 7 ) {
+            x_ += 4; y_ -= 4;
         }
-        cnt += 4;
-        if( cnt >= 64 ) {
-            cnt = 0; walking = 0;
+        cnt_ += 4;
+        if( cnt_ >= 64 ) {
+            cnt_ = 0; walking_ = 0;
         }
 
     }
 
-    if( walking == 0 ) {
-        if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere % width != 0 ) {
-            if( chips[ iswhere - (width + 1) ].solid == 0 ) {
-                walking = 1;
-                iswhere -= width + 1;
+    if( walking_ == 0 ) {
+        if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % width_ != 0 ) {
+            if( chips_[ iswhere_ - (width_ + 1) ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ -= width_ + 1;
             }
-            aim = 4;
+            aim_ = 4;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere % width != 0 ) {
-            if( chips[ iswhere + (width - 1) ].solid == 0 ) {
-                walking = 1;
-                iswhere += width - 1;
+        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % width_ != 0 ) {
+            if( chips_[ iswhere_ + (width_ - 1) ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ += width_ - 1;
             }
-            aim = 5;
+            aim_ = 5;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % width != (width - 1) ) {
-            if( chips[ iswhere + (width + 1) ].solid == 0 ) {
-                walking = 1;
-                iswhere += width + 1;
+        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % width_ != (width_ - 1) ) {
+            if( chips_[ iswhere_ + (width_ + 1) ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ += width_ + 1;
             }
-            aim = 6;
+            aim_ = 6;
         }
-        else if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % width != (width - 1) ) {
-            if( chips[ iswhere - (width - 1) ].solid == 0 ) {
-                walking = 1;
-                iswhere -= width - 1;
+        else if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % width_ != (width_ - 1) ) {
+            if( chips_[ iswhere_ - (width_ - 1) ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ -= width_ - 1;
             }
-            aim = 7;
+            aim_ = 7;
         }
         else if( CheckHitKey( KEY_INPUT_DOWN ) ) {
-            if( chips[ iswhere + width ].solid == 0 ) {
-                walking = 1;
-                iswhere += width;
+            if( chips_[ iswhere_ + width_ ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ += width_;
             }
-            aim = 0;
+            aim_ = 0;
         }
-        else if( CheckHitKey( KEY_INPUT_LEFT ) && iswhere % width != 0 ) {
-            if( chips[ iswhere - 1 ].solid == 0 ) {
-                walking = 1;
-                iswhere -= 1;
+        else if( CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % width_ != 0 ) {
+            if( chips_[ iswhere_ - 1 ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ -= 1;
             }
-            aim = 1;
+            aim_ = 1;
         }
         else if( CheckHitKey( KEY_INPUT_UP ) ) {
-            if( chips[ iswhere - width ].solid == 0 ) {
-                walking = 1;
-                iswhere -= width;
+            if( chips_[ iswhere_ - width_ ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ -= width_;
             }
-            aim = 2;
+            aim_ = 2;
         }
-        else if( CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % width != (width - 1) ) {
-            if( chips[ iswhere + 1 ].solid == 0 ) {
-                walking = 1;
-                iswhere += 1;
+        else if( CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % width_ != (width_ - 1) ) {
+            if( chips_[ iswhere_ + 1 ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ += 1;
             }
-            aim = 3;
+            aim_ = 3;
         }
     }
 }
 
 void Field::draw() {
-    for( int i = 0; i < width * height; i++ ) {
-        DrawRectGraph( chips[ i ].x - x, chips[ i ].y - y, chips[ i ].trim_x, chips[ i ].trim_y, 64, 64, texture, false );
-       //DrawFormatString( chips[ i ].x, chips[ i ].y, chips[ i ].solid ? 0xFFFF00 : 0xFFFFFF, "%d", i );
+    for( int i = 0; i < width_ * height_; i++ ) {
+        DrawRectGraph( chips_[ i ].x_ - x_, chips_[ i ].y_ - y_, chips_[ i ].trim_x_, chips_[ i ].trim_y_, 64, 64, texture_, false );
+       //DrawFormatString( chips_[ i ].x_, chips_[ i ].y_, chips_[ i ].solid_ ? 0x_FFFF00 : 0x_FFFFFF, "%d", i );
     }
 }
 
 void Field::destroy(){
-    if( texture != 0 ) {
-        DeleteGraph( texture );
-        texture = 0;
+    if( texture_ != 0 ) {
+        DeleteGraph( texture_ );
+        texture_ = 0;
     }
-    delete[] chips;
-    chips = NULL;
+    delete[] chips_;
+    chips_ = NULL;
 }

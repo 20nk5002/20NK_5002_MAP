@@ -2,25 +2,25 @@
 #include "Game.h"
 
 bool Game::init() {
-    if( field.init() == false || player.init()==false ) {
+    if( field_.init() == false || player_.init()==false ) {
         return false;
     }
 
     return true;
 }
 bool Game::update() {
-    field.update();
-    player.update();
+    field_.update();
+    player_.update();
     if( CheckHitKey( KEY_INPUT_RETURN ) ) {
         return false;
     }
     return true;
 }
 void Game::draw() {
-    field.draw();
-    player.draw();
+    field_.draw();
+    player_.draw();
 }
 void Game::destroy() {
-    field.destroy();
-    player.destroy();
+    field_.destroy();
+    player_.destroy();
 }

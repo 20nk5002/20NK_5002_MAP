@@ -1,26 +1,26 @@
 #pragma once
 
 struct PChip {
-    int x, y; //ざっひょ
-    int trim_x, trim_y; //びょっが範囲
-    int id; //チップばんご
-    int solid;
+    int x_, y_; //ざっひょ
+    int trim_x_, trim_y_; //びょっが範囲
+    int id_; //チップばんご
+    int solid_;
     PChip(); //コンストラクタ
 };
 
 class Player {
 private:
-    int texture;
-    PChip* chips;
-    int x, y;
-    int walkcount;
-    int walkanimate;
-    int aim = 0;
-    int walking = 0;
-    int cnt = 0;
-    int iswhere = 0;
+    int texture_;
+    PChip* chips_;
+    int x_, y_;
+    int walk_count_;
+    int walk_animate_;
+    int aim_ = 0;
+    int walking_ = 0;
+    int cnt_ = 0;
+    int iswhere_ = 0;
 
-    int stagewidth, stageheight;
+    int stage_width_, stage_height_;
 
 public:
     Player(); //コンストラクタ

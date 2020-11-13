@@ -5,8 +5,8 @@
 
 class Game {
 private:
-    Field field;
-    Player player;
+    Field field_;
+    Player player_;
 
 public:
     bool init();

@@ -4,24 +4,24 @@
 
 
 PChip::PChip() {
-    x = y = 0;
-    trim_x = trim_y = 0;
-    id = 0;
-    solid = 0;
+    x_ = y_ = 0;
+    trim_x_ = trim_y_ = 0;
+    id_ = 0;
+    solid_ = 0;
 }
 
 
 
 
 Player::Player() {
-    texture = 0;
-    walkanimate = aim = 0;
-    walkcount = 0;
-    cnt = 0;
-    x = y = 0;
+    texture_ = 0;
+    walk_animate_ = aim_ = 0;
+    walk_count_ = 0;
+    cnt_ = 0;
+    x_ = y_ = 0;
 
-    walking = 0;
-    chips = NULL;
+    walking_ = 0;
+    chips_ = NULL;
 }
 
 Player::~Player() {
@@ -29,7 +29,7 @@ Player::~Player() {
 }
 
 bool Player::init() {
-    if( (texture = LoadGraph( "sira.png" )) == -1 ) {
+    if( (texture_ = LoadGraph( "sira.png" )) == -1 ) {
         return false;
     }
 
@@ -39,35 +39,35 @@ bool Player::init() {
     }
 
     fseek( fp, 8L, SEEK_SET );
-    fread( &stagewidth, sizeof( int ), 1, fp );
-    fread( &stageheight, sizeof( int ), 1, fp );
+    fread( &stage_width_, sizeof( int ), 1, fp );
+    fread( &stage_height_, sizeof( int ), 1, fp );
 
-    chips = new PChip[ stagewidth * stageheight ];
-    if( chips == NULL ) {
+    chips_ = new PChip[ stage_width_ * stage_height_ ];
+    if( chips_ == NULL ) {
         return false;
     }
 
-    iswhere = 490;
+    iswhere_ = 490;
 
-    x = (iswhere % 20) * 64;
-    y = ((iswhere / 20) - 1) * 64;
+    x_ = (iswhere_ % 20) * 64;
+    y_ = ((iswhere_ / 20) - 1) * 64;
 
     fseek( fp, 20L, SEEK_SET );
 
-    for( int i = 0; i < stagewidth * stageheight; i++ ) {
-        fread( &chips[ i ].id, sizeof( char ), 1, fp );
+    for( int i = 0; i < stage_width_ * stage_height_; i++ ) {
+        fread( &chips_[ i ].id_, sizeof( char ), 1, fp );
 
-        chips[ i ].trim_x = chips[ i ].id % 12 * 64;
-        chips[ i ].trim_y = chips[ i ].id / 12 * 64;
+        chips_[ i ].trim_x_ = chips_[ i ].id_ % 12 * 64;
+        chips_[ i ].trim_y_ = chips_[ i ].id_ / 12 * 64;
 
-        chips[ i ].x = 64 * (i % stagewidth);
-        chips[ i ].y = 64 * (i / stagewidth);
+        chips_[ i ].x_ = 64 * (i % stage_width_);
+        chips_[ i ].y_ = 64 * (i / stage_width_);
 
-        if( chips[ i ].id == 4 || chips[ i ].id == 5 || chips[ i ].id == 10 || chips[ i ].id == 11 ) {
-            chips[ i ].solid = 0;
+        if( chips_[ i ].id_ == 4 || chips_[ i ].id_ == 5 || chips_[ i ].id_ == 10 || chips_[ i ].id_ == 11 ) {
+            chips_[ i ].solid_ = 0;
         }
         else {
-            chips[ i ].solid = 1;
+            chips_[ i ].solid_ = 1;
         }
     }
 
@@ -77,118 +77,118 @@ bool Player::init() {
 
 void Player::update() {
 
-    if( walking == 1 ) {
-       /* if( aim == 0 ) {
-            //y += 4;
+    if( walking_ == 1 ) {
+       /* if( aim_ == 0 ) {
+            //y_ += 4;
         }
-        else if( aim == 1 ) {
-            //x -= 4;
+        else if( aim_ == 1 ) {
+            //x_ -= 4;
         }
-        else if( aim == 2 ) {
-            //y -= 4;
+        else if( aim_ == 2 ) {
+            //y_ -= 4;
         }
-        else if( aim == 3 ) {
-            //x += 4;
+        else if( aim_ == 3 ) {
+            //x_ += 4;
         }
-        else if( aim == 4 ) {
-            //x -= 4; y -= 4;
+        else if( aim_ == 4 ) {
+            //x_ -= 4; y_ -= 4;
         }
-        else if( aim == 5 ) {
-            //x -= 4; y += 4;
+        else if( aim_ == 5 ) {
+            //x_ -= 4; y_ += 4;
         }
-        else if( aim == 6 ) {
-            //x += 4; y += 4;
+        else if( aim_ == 6 ) {
+            //x_ += 4; y_ += 4;
         }
-        else if( aim == 7 ) {
-            //x += 4; y -= 4;
+        else if( aim_ == 7 ) {
+            //x_ += 4; y_ -= 4;
         }*/
-        cnt += 4; 
-        if( cnt >= 64 ) {
-            cnt = 0; walking = 0;
+        cnt_ += 4; 
+        if( cnt_ >= 64 ) {
+            cnt_ = 0; walking_ = 0;
         }
 
     }
 
-    if( walking == 0 ) {
-        if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere % stagewidth != 0 ) {
-            if( chips[ iswhere - (stagewidth + 1) ].solid == 0 ) {
-                walking = 1;
-                iswhere -= stagewidth + 1;
+    if( walking_ == 0 ) {
+        if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % stage_width_ != 0 ) {
+            if( chips_[ iswhere_ - (stage_width_ + 1) ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ -= stage_width_ + 1;
             }
-            aim = 4;
+            aim_ = 4;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere % stagewidth != 0 ) {
-            if( chips[ iswhere + (stagewidth - 1) ].solid == 0 ) {
-                walking = 1;
-                iswhere += stagewidth - 1;
+        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % stage_width_ != 0 ) {
+            if( chips_[ iswhere_ + (stage_width_ - 1) ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ += stage_width_ - 1;
             }
-            aim = 5;
+            aim_ = 5;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % stagewidth != (stagewidth - 1) ) {
-            if( chips[ iswhere + (stagewidth + 1) ].solid == 0 ) {
-                walking = 1;
-                iswhere += stagewidth + 1;
+        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
+            if( chips_[ iswhere_ + (stage_width_ + 1) ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ += stage_width_ + 1;
             }
-            aim = 6;
+            aim_ = 6;
         }
-        else if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % stagewidth != (stagewidth - 1) ) {
-            if( chips[ iswhere - (stagewidth - 1) ].solid == 0 ) {
-                walking = 1;
-                iswhere -= stagewidth - 1;
+        else if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
+            if( chips_[ iswhere_ - (stage_width_ - 1) ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ -= stage_width_ - 1;
             }
-            aim = 7;
+            aim_ = 7;
         }
         else if( CheckHitKey( KEY_INPUT_DOWN ) ) {
-            if( chips[ iswhere + stagewidth ].solid == 0 ) {
-                walking = 1;
-                iswhere += stagewidth;
+            if( chips_[ iswhere_ + stage_width_ ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ += stage_width_;
             }
-            aim = 0;
+            aim_ = 0;
         }
-        else if( CheckHitKey( KEY_INPUT_LEFT ) && iswhere % stagewidth != 0 ) {
-            if( chips[ iswhere - 1 ].solid == 0 ) {
-                walking = 1;
-                iswhere -= 1;
+        else if( CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % stage_width_ != 0 ) {
+            if( chips_[ iswhere_ - 1 ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ -= 1;
             }
-            aim = 1;
+            aim_ = 1;
         }
         else if( CheckHitKey( KEY_INPUT_UP ) ) {
-            if( chips[ iswhere - stagewidth ].solid == 0 ) {
-                walking = 1;
-                iswhere -= stagewidth;
+            if( chips_[ iswhere_ - stage_width_ ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ -= stage_width_;
             }
-            aim = 2;
+            aim_ = 2;
         }
-        else if( CheckHitKey( KEY_INPUT_RIGHT ) && iswhere % stagewidth != (stagewidth - 1) ) {
-            if( chips[ iswhere + 1 ].solid == 0 ) {
-                walking = 1;
-                iswhere += 1;
+        else if( CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
+            if( chips_[ iswhere_ + 1 ].solid_ == 0 ) {
+                walking_ = 1;
+                iswhere_ += 1;
             }
-            aim = 3;
+            aim_ = 3;
         }
     }
 
-   walkcount++;
-    if( walkcount == 20 ) {
-        walkanimate = 1;
+   walk_count_++;
+    if( walk_count_ == 20 ) {
+        walk_animate_ = 1;
     }
-    if( walkcount == 40 ) {
-        walkanimate = 0;
+    if( walk_count_ == 40 ) {
+        walk_animate_ = 0;
     }
-    if( walkcount == 60 ) {
-        walkanimate = 2;
-    }if( walkcount == 80 ) {
-        walkanimate = 0;
-        walkcount = 0;
+    if( walk_count_ == 60 ) {
+        walk_animate_ = 2;
+    }if( walk_count_ == 80 ) {
+        walk_animate_ = 0;
+        walk_count_ = 0;
     }
 
 }
 
 void Player::draw() {
-    DrawRectGraph( 640, 320, 64 * (walkanimate)+(192 * (aim >= 4)), 96 * (aim % 4), 64, 96, texture, 1, 0, 0 );
-    //DrawFormatString( (iswhere % stagewidth) * 64, (iswhere / stagewidth) * 64, 0x00FFFF, "Å°" );
+    DrawRectGraph( 640, 320, 64 * (walk_animate_)+(192 * (aim_ >= 4)), 96 * (aim_ % 4), 64, 96, texture_, 1, 0, 0 );
+    //DrawFormatString( (iswhere_ % stage_width_) * 64, (iswhere_ / stage_width_) * 64, 0x00FFFF, "Å°" );
 }
 
 void Player::destroy() {
-    DeleteGraph( texture );
+    DeleteGraph( texture_ );
 }

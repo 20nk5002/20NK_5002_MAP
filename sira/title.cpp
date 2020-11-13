@@ -2,14 +2,14 @@
 #include "title.h"
 
 Title::Title() {
-    texture = 0;
+    texture_ = 0;
 }
 Title::~Title() {
     destroy();
 }
 
 bool Title::init() {
-    if( !(texture = LoadGraph( "messon.png" )) ) {
+    if( !(texture_ = LoadGraph( "messon.png" )) ) {
         return false;
     }
     return true;
@@ -21,10 +21,10 @@ bool Title::update() {
     return true;
 }
 void Title::draw() {
-    DrawGraph( 0, 0, texture, 0 );
+    DrawGraph( 0, 0, texture_, 0 );
 }
 
 void Title::destroy() {
-    DeleteGraph( texture );
-    texture = 0;
+    DeleteGraph( texture_ );
+    texture_ = 0;
 }

@@ -1,24 +1,24 @@
 #pragma once
 
 struct Chip {
-    int x, y; //ざっひょ
-    int trim_x, trim_y; //びょっが範囲
-    int id; //チップばんご
-    int solid;
+    int x_, y_; //ざっひょ
+    int trim_x_, trim_y_; //びょっが範囲
+    int id_; //チップばんご
+    int solid_;
     Chip(); //コンストラクタ
 };
 
 class Field {
 private:
-    int texture;//グラフィックハンドル
-    Chip* chips;//チップ構造体ポインタ
-    int width, height; //縦横に並んでいるチップの個数
+    int texture_;//グラフィックハンドル
+    Chip* chips_;//チップ構造体ポインタ
+    int width_, height_; //縦横に並んでいるチップの個数
 
-    int x, y;
-    int walking;
-    int iswhere;
-    int cnt;
-    int aim;
+    int x_, y_;
+    int walking_;
+    int iswhere_;
+    int cnt_;
+    int aim_;
 
 public:
     Field(); //コンストラクタ

@@ -2,7 +2,7 @@
 
 class Title {
 private:
-    int texture;
+    int texture_;
 
 public:
     Title();
