@@ -11,7 +11,9 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
     ChangeWindowMode( 1 );//ウィンドウ表示
     SetGraphMode( 1280, 720, 32 );//画面解像度
 
-    SetWindowText( "Game" );
+    SetMainWindowText( "Game" );
+
+    SetWaitVSyncFlag( false );
 
     if( DxLib_Init() == -1 ) { //DXライブラリの初期化
         return 0;
@@ -51,7 +53,11 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
             work = TITLE_UPDATE;
             break;
         case TITLE_UPDATE:
-            title.update();
+            if( title.update() == false ) {
+                title.destroy();
+                work = GAME_INIT;
+                continue;
+            }
             break;
         case GAME_INIT:
             if( game.init() == false ) {
@@ -59,7 +65,11 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
             }
             work = GAME_UPDATE;
         case GAME_UPDATE:
-            game.update();
+            if( game.update() == false ) {
+                game.destroy();
+                work = TITLE_INIT;
+                continue;
+            }
             break;
         }
 
@@ -75,6 +85,8 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
         }
 
         ScreenFlip(); //裏画面に描画した内容を表示
+
+        WaitTimer( 16 );
     }
 
     game.destroy();

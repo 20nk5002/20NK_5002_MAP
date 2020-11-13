@@ -8,7 +8,8 @@ struct PChip {
     PChip(); //コンストラクタ
 };
 
-struct Player {
+class Player {
+private:
     int texture;
     PChip* chips;
     int x, y;
@@ -21,6 +22,7 @@ struct Player {
 
     int stagewidth, stageheight;
 
+public:
     Player(); //コンストラクタ
     ~Player(); //デストラクタ
 

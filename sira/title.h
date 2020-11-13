@@ -1,7 +1,12 @@
 #pragma once
 
-struct Title {
+class Title {
+private:
     int texture;
+
+public:
+    Title();
+    ~Title();
 
     bool init();
     bool update();

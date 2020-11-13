@@ -3,10 +3,12 @@
 #include"field.h"
 #include"player.h"
 
-struct Game {
+class Game {
+private:
     Field field;
     Player player;
 
+public:
     bool init();
     bool update();
     void draw();

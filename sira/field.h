@@ -8,7 +8,8 @@ struct Chip {
     Chip(); //コンストラクタ
 };
 
-struct Field {
+class Field {
+private:
     int texture;//グラフィックハンドル
     Chip* chips;//チップ構造体ポインタ
     int width, height; //縦横に並んでいるチップの個数
@@ -19,6 +20,7 @@ struct Field {
     int cnt;
     int aim;
 
+public:
     Field(); //コンストラクタ
     ~Field(); //デストラクタ
 

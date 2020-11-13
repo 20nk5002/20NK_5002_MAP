@@ -1,3 +1,4 @@
+#include"DxLib.h"
 #include "Game.h"
 
 bool Game::init() {
@@ -10,6 +11,9 @@ bool Game::init() {
 bool Game::update() {
     field.update();
     player.update();
+    if( CheckHitKey( KEY_INPUT_RETURN ) ) {
+        return false;
+    }
     return true;
 }
 void Game::draw() {

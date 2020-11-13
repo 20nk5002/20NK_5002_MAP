@@ -1,6 +1,13 @@
 #include "DxLib.h"
 #include "title.h"
 
+Title::Title() {
+    texture = 0;
+}
+Title::~Title() {
+    destroy();
+}
+
 bool Title::init() {
     if( !(texture = LoadGraph( "messon.png" )) ) {
         return false;
@@ -8,6 +15,9 @@ bool Title::init() {
     return true;
 }
 bool Title::update() {
+    if( CheckHitKey( KEY_INPUT_SPACE ) ) {
+        return false;
+    }
     return true;
 }
 void Title::draw() {
@@ -16,4 +26,5 @@ void Title::draw() {
 
 void Title::destroy() {
     DeleteGraph( texture );
+    texture = 0;
 }
