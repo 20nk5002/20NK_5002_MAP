@@ -77,6 +77,9 @@ bool Player::init() {
 
 void Player::update() {
 
+    XINPUT_STATE xinput;
+    GetJoypadXInputState( DX_INPUT_PAD1, &xinput );
+
     if( walking_ == 1 ) {
        /* if( aim_ == 0 ) {
             //y_ += 4;
@@ -110,56 +113,56 @@ void Player::update() {
     }
 
     if( walking_ == 0 ) {
-        if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % stage_width_ != 0 ) {
+        if( (CheckHitKey( KEY_INPUT_UP ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_UP ]) && CheckHitKey( KEY_INPUT_LEFT ) || (xinput.Buttons[ XINPUT_BUTTON_DPAD_LEFT ]) && iswhere_ % stage_width_ != 0 ) {
             if( chips_[ iswhere_ - (stage_width_ + 1) ].solid_ == 0 ) {
                 walking_ = 1;
                 iswhere_ -= stage_width_ + 1;
             }
             aim_ = 4;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % stage_width_ != 0 ) {
+        else if( (CheckHitKey( KEY_INPUT_DOWN ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_DOWN ]) && (CheckHitKey( KEY_INPUT_LEFT ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_LEFT ]) && iswhere_ % stage_width_ != 0 ) {
             if( chips_[ iswhere_ + (stage_width_ - 1) ].solid_ == 0 ) {
                 walking_ = 1;
                 iswhere_ += stage_width_ - 1;
             }
             aim_ = 5;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
+        else if( (CheckHitKey( KEY_INPUT_DOWN ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_DOWN ]) && (CheckHitKey( KEY_INPUT_RIGHT ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_RIGHT ]) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
             if( chips_[ iswhere_ + (stage_width_ + 1) ].solid_ == 0 ) {
                 walking_ = 1;
                 iswhere_ += stage_width_ + 1;
             }
             aim_ = 6;
         }
-        else if( CheckHitKey( KEY_INPUT_UP ) && CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
+        else if( (CheckHitKey( KEY_INPUT_UP)||xinput.Buttons[XINPUT_BUTTON_DPAD_UP] ) && (CheckHitKey( KEY_INPUT_RIGHT ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_RIGHT ]) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
             if( chips_[ iswhere_ - (stage_width_ - 1) ].solid_ == 0 ) {
                 walking_ = 1;
                 iswhere_ -= stage_width_ - 1;
             }
             aim_ = 7;
         }
-        else if( CheckHitKey( KEY_INPUT_DOWN ) ) {
+        else if( (CheckHitKey( KEY_INPUT_DOWN ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_DOWN ]) ) {
             if( chips_[ iswhere_ + stage_width_ ].solid_ == 0 ) {
                 walking_ = 1;
                 iswhere_ += stage_width_;
             }
             aim_ = 0;
         }
-        else if( CheckHitKey( KEY_INPUT_LEFT ) && iswhere_ % stage_width_ != 0 ) {
+        else if( (CheckHitKey( KEY_INPUT_LEFT ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_LEFT ]) && iswhere_ % stage_width_ != 0 ) {
             if( chips_[ iswhere_ - 1 ].solid_ == 0 ) {
                 walking_ = 1;
                 iswhere_ -= 1;
             }
             aim_ = 1;
         }
-        else if( CheckHitKey( KEY_INPUT_UP ) ) {
+        else if( (CheckHitKey( KEY_INPUT_UP ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_UP ]) ) {
             if( chips_[ iswhere_ - stage_width_ ].solid_ == 0 ) {
                 walking_ = 1;
                 iswhere_ -= stage_width_;
             }
             aim_ = 2;
         }
-        else if( CheckHitKey( KEY_INPUT_RIGHT ) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
+        else if( (CheckHitKey( KEY_INPUT_RIGHT ) || xinput.Buttons[ XINPUT_BUTTON_DPAD_RIGHT]) && iswhere_ % stage_width_ != (stage_width_ - 1) ) {
             if( chips_[ iswhere_ + 1 ].solid_ == 0 ) {
                 walking_ = 1;
                 iswhere_ += 1;

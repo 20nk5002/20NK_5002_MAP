@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "game.h"
 #include "title.h"
+#include "fade.h"
 
 //シーン管理
 enum {
@@ -22,6 +23,7 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
 
     Title title;
     Game game;
+    Fade fade;
     if( game.init() == false ) {
         return 0;
     }
@@ -53,7 +55,10 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
             work = TITLE_UPDATE;
             break;
         case TITLE_UPDATE:
-            if( title.update() == false ) {
+            if( title.update() == true ) {
+                continue;
+            }
+            else if( fade.fadeplus() == true ) {
                 title.destroy();
                 work = GAME_INIT;
                 continue;
@@ -64,7 +69,12 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
                 return 0;
             }
             work = GAME_UPDATE;
+            break;
         case GAME_UPDATE:
+            if( fade.fademinus() == false ) {
+                fade.fademinus();
+                break;
+            }
             if( game.update() == false ) {
                 game.destroy();
                 work = TITLE_INIT;
@@ -83,6 +93,7 @@ int WINAPI WinMain( HINSTANCE hInsrtance, HINSTANCE hPrevInstance, LPSTR lpcmdLi
             game.draw();
             break;
         }
+        fade.draw();
 
         ScreenFlip(); //裏画面に描画した内容を表示
 
