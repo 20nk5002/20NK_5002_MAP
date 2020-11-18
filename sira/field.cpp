@@ -1,6 +1,7 @@
 #include<cstdio>
 #include "DxLib.h"
 #include "field.h"
+#include "error.h"
 
 Chip::Chip() {
     x_ = y_ = 0;
@@ -27,10 +28,12 @@ bool Field::init() {
     iswhere_ = 490;
 
     if( (texture_ = LoadGraph( "mapchip0.png" )) == -1 ) {
+        Error::showDialog( "\"mapchip0.png\" is not found." );
         return false;
     }
     FILE* fp = fopen( "alice.fmf", "rb" );
     if( fp == NULL ) {
+        Error::showDialog( "\"alice.fmf\" is not found." );
         return false;
     }
 

@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "title.h"
+#include"error.h"
 
 Title::Title() {
     texture_ = 0;
@@ -10,6 +11,7 @@ Title::~Title() {
 
 bool Title::init() {
     if( !(texture_ = LoadGraph( "messon.png" )) ) {
+        Error::showDialog( "\"messon.png\" is not found." );
         return false;
     }
     return true;

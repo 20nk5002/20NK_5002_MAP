@@ -1,6 +1,7 @@
 #include<cstdio>
 #include"DxLib.h"
 #include"player.h"
+#include"error.h"
 
 
 PChip::PChip() {
@@ -30,6 +31,7 @@ Player::~Player() {
 
 bool Player::init() {
     if( (texture_ = LoadGraph( "sira.png" )) == -1 ) {
+        Error::showDialog( "\"sira.png\" is not found." );
         return false;
     }
 
